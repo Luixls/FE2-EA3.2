@@ -1,6 +1,6 @@
 // ruta: hotel-venezuela/src/App.jsx
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -9,6 +9,8 @@ import Inicio from "./pages/Inicio";
 import Blog from "./pages/Blog";
 import Testimonios from "./pages/Testimonios";
 import Reservas from "./pages/Reservas";
+import Registro from "./pages/Registro";
+import Login from "./pages/Login";
 
 function App() {
   const location = useLocation();
@@ -48,6 +50,22 @@ function App() {
               element={
                 <PaginaAnimada>
                   <Reservas />
+                </PaginaAnimada>
+              }
+            />
+            <Route
+              path="/registro"
+              element={
+                <PaginaAnimada>
+                  <Registro />
+                </PaginaAnimada>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PaginaAnimada>
+                  <Login />
                 </PaginaAnimada>
               }
             />
