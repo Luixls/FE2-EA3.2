@@ -3,9 +3,11 @@ import React from "react";
 
 function Testimonios() {
   return (
-    <div>
-      <h2 className="text-3xl font-bold mb-4">Testimonios de Nuestros Clientes</h2>
-      <p>Descubre lo que nuestros huéspedes opinan sobre su experiencia en Hotel Venezuela.</p>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+      <h2 className="text-4xl font-bold text-blue-600 mb-4 text-center">Testimonios de Nuestros Clientes</h2>
+      <p className="text-lg text-gray-700 text-center max-w-2xl">
+        Descubre lo que nuestros huéspedes opinan sobre su experiencia en Hotel Venezuela. Nos enorgullece recibir opiniones positivas y aprender de cada uno de nuestros visitantes.
+      </p>
     </div>
   );
 }

@@ -3,11 +3,10 @@ import React from "react";
 
 function Blog() {
   return (
-    <div>
-      <h2 className="text-3xl font-bold mb-4">Blog de Viajes y Turismo</h2>
-      <p>
-        Encuentra artículos y guías sobre el turismo en Mérida, Venezuela. 
-        Consejos de viaje, atracciones y mucho más.
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-100">
+      <h2 className="text-4xl font-bold text-blue-600 mb-4 text-center">Blog de Viajes y Turismo</h2>
+      <p className="text-lg text-gray-700 text-center max-w-2xl">
+        Encuentra artículos y guías sobre el turismo en Mérida, Venezuela. Consejos de viaje, atracciones y mucho más. Explora nuestras publicaciones y descubre cómo hacer de tu próxima visita una experiencia memorable.
       </p>
     </div>
   );

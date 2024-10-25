@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({ toggleModoNocturno, modoNocturno })  {
   const navigate = useNavigate();
   const [mensaje, setMensaje] = useState("");
 
@@ -21,32 +21,26 @@ function Header() {
   };
 
   return (
-    <header className="bg-gray-800 text-white p-4">
+    <header className="bg-gray-800 text-white p-4 dark:bg-gray-900">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">
           <Link to="/">Hotel Venezuela</Link>
         </h1>
-        <nav>
+        <nav className="flex items-center">
           <Link to="/" className="mx-2 hover:underline">Inicio</Link>
           <Link to="/blog" className="mx-2 hover:underline">Blog</Link>
           <Link to="/testimonios" className="mx-2 hover:underline">Testimonios</Link>
           <Link to="/reservas" className="mx-2 hover:underline">Reservas</Link>
-          
-          {isAuthenticated ? (
-            <>
-              <button onClick={handleLogout} className="mx-2 hover:underline">
-                Cerrar Sesión
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/registro" className="mx-2 hover:underline">Registro</Link>
-              <Link to="/login" className="mx-2 hover:underline">Iniciar Sesión</Link>
-            </>
-          )}
+          <Link to="/registro" className="mx-2 hover:underline">Registro</Link>
+          <Link to="/login" className="mx-2 hover:underline">Iniciar Sesión</Link>
+          <button
+            onClick={toggleModoNocturno}
+            className="ml-4 px-2 py-1 border border-gray-300 rounded text-sm hover:bg-gray-200 dark:hover:bg-gray-700"
+          >
+            {modoNocturno ? "Modo Claro" : "Modo Nocturno"}
+          </button>
         </nav>
       </div>
-      {mensaje && <p className="text-center mt-2">{mensaje}</p>}
     </header>
   );
 }
