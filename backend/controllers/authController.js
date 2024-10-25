@@ -32,33 +32,43 @@ async function crearAdminSiNoExiste() {
 
 // Controlador para registrar un nuevo usuario
 async function registrarUsuario(req, res) {
-  const { username, nombre, email, password } = req.body;
-  try {
-    const usuarioExistente = await Usuario.findOne({ email });
-    if (usuarioExistente) return res.status(400).json({ mensaje: "El usuario ya existe" });
-
-    const hashPassword = await bcrypt.hash(password, 10);
-    const nuevoUsuario = new Usuario({
-      username,
-      nombre,
-      email,
-      password: hashPassword,
-      rol: "usuario",
-    });
-    await nuevoUsuario.save();
-
-    res.status(201).json({ mensaje: "Usuario registrado exitosamente" });
-  } catch (error) {
-    res.status(500).json({ mensaje: "Error en el registro" });
+    const { username, nombre, email, password } = req.body;
+    try {
+      // Convertir el nombre de usuario y correo a minúsculas
+      const usernameLower = username.toLowerCase();
+      const emailLower = email.toLowerCase();
+  
+      const usuarioExistente = await Usuario.findOne({ email: emailLower });
+      if (usuarioExistente) {
+        return res.status(400).json({ mensaje: "El usuario ya existe" });
+      }
+  
+      const hashPassword = await bcrypt.hash(password, 10);
+      const nuevoUsuario = new Usuario({
+        username: usernameLower,
+        nombre,
+        email: emailLower,
+        password: hashPassword,
+        rol: "usuario",
+      });
+      await nuevoUsuario.save();
+  
+      res.status(201).json({ mensaje: "Usuario registrado exitosamente" });
+    } catch (error) {
+      console.error("Error en el registro:", error); 
+      res.status(500).json({ mensaje: "Error en el registro", error: error.message });
+    }
   }
-}
 
 // Controlador para iniciar sesión
 async function iniciarSesion(req, res) {
-    const { emailOrUsername, password } = req.body; 
+    const { emailOrUsername, password } = req.body;
     try {
+      // Convertir el nombre de usuario o correo a minúsculas
+      const emailOrUsernameLower = emailOrUsername.toLowerCase();
+  
       const usuario = await Usuario.findOne({
-        $or: [{ email: emailOrUsername }, { username: emailOrUsername }]
+        $or: [{ email: emailOrUsernameLower }, { username: emailOrUsernameLower }],
       });
       if (!usuario) return res.status(400).json({ mensaje: "Credenciales incorrectas" });
   
@@ -68,6 +78,7 @@ async function iniciarSesion(req, res) {
       const token = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
       res.json({ token, mensaje: "Inicio de sesión exitoso" });
     } catch (error) {
+      console.error("Error en el inicio de sesión:", error);
       res.status(500).json({ mensaje: "Error en el inicio de sesión" });
     }
   }

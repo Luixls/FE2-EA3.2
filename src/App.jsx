@@ -11,12 +11,12 @@ import Testimonios from "./pages/Testimonios";
 import Reservas from "./pages/Reservas";
 import Registro from "./pages/Registro";
 import Login from "./pages/Login";
+import Servicios from "./pages/Servicios"; // Nueva página
 
 function App() {
   const [modoNocturno, setModoNocturno] = useState(false);
   const location = useLocation();
 
-  // Cambia la clase 'dark' en el elemento raíz al alternar el modo nocturno
   useEffect(() => {
     document.documentElement.classList.toggle("dark", modoNocturno);
   }, [modoNocturno]);
@@ -37,6 +37,7 @@ function App() {
             <Route path="/reservas" element={<PaginaAnimada><Reservas /></PaginaAnimada>} />
             <Route path="/registro" element={<PaginaAnimada><Registro /></PaginaAnimada>} />
             <Route path="/login" element={<PaginaAnimada><Login /></PaginaAnimada>} />
+            <Route path="/servicios" element={<PaginaAnimada><Servicios /></PaginaAnimada>} /> {/* Nueva ruta */}
           </Routes>
         </AnimatePresence>
       </main>
