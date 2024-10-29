@@ -13,18 +13,20 @@ const obtenerHabitaciones = async (req, res) => {
 
 // Agregar una habitación (solo admin)
 const agregarHabitacion = async (req, res) => {
+  const { descripcion, comodidades, imagen, tarifas, evaluacion, maximoHuespedes } = req.body;
+  
   try {
-    const { descripcion, comodidades, imagen, tarifas, evaluacion } = req.body;
     const nuevaHabitacion = new Habitacion({
       descripcion,
       comodidades,
       imagen,
       tarifas,
       evaluacion,
-      reviews: [] // Inicia con reviews vacío
+      maximoHuespedes,
+      reviews: [], // Inicializa reviews como un arreglo vacío
     });
     await nuevaHabitacion.save();
-    res.status(201).json({ mensaje: "Habitación agregada exitosamente" });
+    res.status(201).json(nuevaHabitacion);
   } catch (error) {
     res.status(500).json({ mensaje: "Error al agregar la habitación" });
   }
@@ -32,8 +34,14 @@ const agregarHabitacion = async (req, res) => {
 
 // Editar una habitación (solo admin)
 const editarHabitacion = async (req, res) => {
+  const { descripcion, comodidades, imagen, tarifas, evaluacion, maximoHuespedes } = req.body;
+
   try {
-    const habitacionActualizada = await Habitacion.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const habitacionActualizada = await Habitacion.findByIdAndUpdate(
+      req.params.id,
+      { descripcion, comodidades, imagen, tarifas, evaluacion, maximoHuespedes },
+      { new: true }
+    );
     res.json(habitacionActualizada);
   } catch (error) {
     res.status(500).json({ mensaje: "Error al editar la habitación" });

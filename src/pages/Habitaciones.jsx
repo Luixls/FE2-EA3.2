@@ -6,15 +6,17 @@ function Habitaciones() {
   const [habitaciones, setHabitaciones] = useState([]);
   const [error, setError] = useState("");
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  const [modoEdicion, setModoEdicion] = useState(false); // Controla si estamos en modo edición
-  const [habitacionSeleccionada, setHabitacionSeleccionada] = useState(null); // Guarda la habitación a editar
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [habitacionSeleccionada, setHabitacionSeleccionada] = useState(null);
   const [nuevaHabitacion, setNuevaHabitacion] = useState({
     descripcion: "",
     comodidades: "",
     imagen: "",
     tarifas: "",
     evaluacion: "",
+    maximoHuespedes: "", // Aseguramos que maximoHuespedes tenga un valor inicial vacío
   });
+  const [filtroHuespedes, setFiltroHuespedes] = useState("");
 
   const token = localStorage.getItem("token");
   const isAdmin = token && localStorage.getItem("rol") === "admin";
@@ -40,13 +42,13 @@ function Habitaciones() {
     try {
       await axios.post("http://localhost:5000/api/habitaciones", {
         ...nuevaHabitacion,
-        reviews: [] // Inicializar reviews como arreglo vacío
+        reviews: [],
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      await obtenerHabitaciones(); // Actualizar lista completa de habitaciones después de agregar
-      setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "" });
-      setMostrarFormulario(false); // Cerrar el formulario después de agregar
+      await obtenerHabitaciones();
+      setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "", maximoHuespedes: "" });
+      setMostrarFormulario(false);
     } catch (error) {
       alert("Error al agregar la habitación");
     }
@@ -60,6 +62,7 @@ function Habitaciones() {
       imagen: habitacion.imagen,
       tarifas: habitacion.tarifas,
       evaluacion: habitacion.evaluacion,
+      maximoHuespedes: habitacion.maximoHuespedes || "", // Aseguramos que maximoHuespedes esté inicializado
     });
     setMostrarFormulario(true);
     setModoEdicion(true);
@@ -72,8 +75,8 @@ function Habitaciones() {
       await axios.put(`http://localhost:5000/api/habitaciones/${habitacionSeleccionada._id}`, nuevaHabitacion, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      await obtenerHabitaciones(); // Actualizar la lista de habitaciones después de editar
-      setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "" });
+      await obtenerHabitaciones();
+      setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "", maximoHuespedes: "" });
       setMostrarFormulario(false);
       setModoEdicion(false);
       setHabitacionSeleccionada(null);
@@ -93,6 +96,11 @@ function Habitaciones() {
     }
   };
 
+  // Filtrado de habitaciones por número de huéspedes
+  const habitacionesFiltradas = filtroHuespedes
+    ? habitaciones.filter(habitacion => habitacion.maximoHuespedes >= filtroHuespedes)
+    : habitaciones;
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-3xl font-bold text-center mb-6">Nuestras Habitaciones</h2>
@@ -100,15 +108,29 @@ function Habitaciones() {
         <button
           onClick={() => {
             setMostrarFormulario(!mostrarFormulario);
-            setModoEdicion(false); // Salir del modo edición si estamos agregando una nueva habitación
+            setModoEdicion(false);
             setHabitacionSeleccionada(null);
-            setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "" });
+            setNuevaHabitacion({ descripcion: "", comodidades: "", imagen: "", tarifas: "", evaluacion: "", maximoHuespedes: "" });
           }}
           className="mb-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
         >
           {mostrarFormulario ? "Cerrar formulario" : "Agregar habitación"}
         </button>
       )}
+      
+      {/* Filtro por número de huéspedes */}
+      <div className="mb-6">
+        <label className="block font-semibold mb-2">Filtrar por número de huéspedes:</label>
+        <input
+          type="number"
+          min="1"
+          placeholder="Número de huéspedes"
+          value={filtroHuespedes}
+          onChange={(e) => setFiltroHuespedes(e.target.value)}
+          className="p-2 border border-gray-300 rounded w-full"
+        />
+      </div>
+
       {mostrarFormulario && (
         <div className="bg-gray-100 p-4 rounded-lg shadow-lg mb-6">
           <h3 className="text-xl font-bold mb-4">
@@ -154,6 +176,15 @@ function Habitaciones() {
             max="10"
             onChange={handleChange}
             value={nuevaHabitacion.evaluacion}
+            className="p-2 border border-gray-300 rounded mb-2 w-full"
+          />
+          <input
+            type="number"
+            name="maximoHuespedes"
+            placeholder="Máx. Huéspedes"
+            min="1"
+            onChange={handleChange}
+            value={nuevaHabitacion.maximoHuespedes}
             className="p-2 border border-gray-300 rounded mb-4 w-full"
           />
           <button
@@ -166,7 +197,7 @@ function Habitaciones() {
       )}
       {error && <p className="text-red-500 text-center">{error}</p>}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {habitaciones.map((habitacion) => (
+        {habitacionesFiltradas.map((habitacion) => (
           <div key={habitacion._id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
             <img
               src={habitacion.imagen}
@@ -174,9 +205,10 @@ function Habitaciones() {
               className="w-full h-48 object-cover rounded mb-4"
             />
             <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2">{habitacion.descripcion}</h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300">Tarifa: {habitacion.tarifas}</p>
+            <p className="text-lg text-gray-600 dark:text-gray-300">Tarifa: ${habitacion.tarifas}</p>
             <p className="text-gray-600 dark:text-gray-300">Evaluación: {habitacion.evaluacion}/10</p>
             <p className="text-gray-600 dark:text-gray-300">Comodidades: {habitacion.comodidades}</p>
+            <p className="text-gray-600 dark:text-gray-300">Máx. Huéspedes: {habitacion.maximoHuespedes}</p>
             <div className="mt-2">
               <h4 className="font-semibold">Reviews:</h4>
               {habitacion.reviews && habitacion.reviews.length > 0 ? (
