@@ -11,7 +11,8 @@ import Testimonios from "./pages/Testimonios";
 import Reservas from "./pages/Reservas";
 import Registro from "./pages/Registro";
 import Login from "./pages/Login";
-import Servicios from "./pages/Servicios"; // Nueva página
+import Servicios from "./pages/Servicios";
+import Habitaciones from "./pages/Habitaciones"; // Nueva página
 
 function App() {
   const [modoNocturno, setModoNocturno] = useState(false);
@@ -37,7 +38,8 @@ function App() {
             <Route path="/reservas" element={<PaginaAnimada><Reservas /></PaginaAnimada>} />
             <Route path="/registro" element={<PaginaAnimada><Registro /></PaginaAnimada>} />
             <Route path="/login" element={<PaginaAnimada><Login /></PaginaAnimada>} />
-            <Route path="/servicios" element={<PaginaAnimada><Servicios /></PaginaAnimada>} /> {/* Nueva ruta */}
+            <Route path="/servicios" element={<PaginaAnimada><Servicios /></PaginaAnimada>} />
+            <Route path="/habitaciones" element={<PaginaAnimada><Habitaciones /></PaginaAnimada>} /> {/* Nueva ruta */}
           </Routes>
         </AnimatePresence>
       </main>

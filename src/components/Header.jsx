@@ -8,18 +8,16 @@ function Header({ toggleModoNocturno, modoNocturno }) {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [mensaje, setMensaje] = useState("");
 
-  // Verificar si el usuario está autenticado
   const isAuthenticated = !!localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setMensaje("Sesión cerrada correctamente.");
-
     setTimeout(() => {
       setMensaje("");
       navigate("/login");
     }, 2000);
-    setMenuAbierto(false); // Cerrar el menú después de cerrar sesión
+    setMenuAbierto(false);
   };
 
   const toggleMenu = () => {
@@ -36,7 +34,6 @@ function Header({ toggleModoNocturno, modoNocturno }) {
         <h1 className="text-xl font-bold">
           <Link to="/" onClick={closeMenu}>Hotel Venezuela</Link>
         </h1>
-        {/* Botón de menú hamburguesa siempre visible */}
         <button
           onClick={toggleMenu}
           className="text-white focus:outline-none"
@@ -44,7 +41,6 @@ function Header({ toggleModoNocturno, modoNocturno }) {
           ☰
         </button>
 
-        {/* Enlaces de navegación con animación */}
         <AnimatePresence>
           {menuAbierto && (
             <motion.nav
@@ -56,6 +52,7 @@ function Header({ toggleModoNocturno, modoNocturno }) {
             >
               <Link to="/" className="hover:underline" onClick={closeMenu}>Inicio</Link>
               <Link to="/servicios" className="hover:underline" onClick={closeMenu}>Servicios</Link>
+              <Link to="/habitaciones" className="hover:underline" onClick={closeMenu}>Habitaciones</Link>
               <Link to="/blog" className="hover:underline" onClick={closeMenu}>Blog</Link>
               <Link to="/testimonios" className="hover:underline" onClick={closeMenu}>Testimonios</Link>
               <Link to="/reservas" className="hover:underline" onClick={closeMenu}>Reservas</Link>

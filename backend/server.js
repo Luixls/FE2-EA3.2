@@ -20,6 +20,8 @@ mongoose.connect(process.env.MONGO_URI, {
 // Rutas
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
+const habitacionRoutes = require("./routes/habitacionRoutes");
+app.use("/api/habitaciones", habitacionRoutes);
 
 // Configuración del servidor
 const PORT = process.env.PORT || 5000;

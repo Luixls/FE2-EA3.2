@@ -17,6 +17,7 @@ function Login() {
     try {
       const res = await axios.post("http://localhost:5000/api/auth/login", formData);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("rol", res.data.rol); // Guardar el rol del usuario
       setMensaje("Inicio de sesión exitoso. Bienvenido/a!");
       
       setTimeout(() => {
@@ -24,7 +25,7 @@ function Login() {
         navigate("/");
       }, 2000);
     } catch (error) {
-      setMensaje(error.response.data.mensaje);
+      setMensaje(error.response?.data?.mensaje || "Error al iniciar sesión");
     }
   };
 

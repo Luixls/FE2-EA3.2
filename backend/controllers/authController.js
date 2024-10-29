@@ -64,9 +64,7 @@ async function registrarUsuario(req, res) {
 async function iniciarSesion(req, res) {
     const { emailOrUsername, password } = req.body;
     try {
-      // Convertir el nombre de usuario o correo a minúsculas
       const emailOrUsernameLower = emailOrUsername.toLowerCase();
-  
       const usuario = await Usuario.findOne({
         $or: [{ email: emailOrUsernameLower }, { username: emailOrUsernameLower }],
       });
@@ -76,7 +74,7 @@ async function iniciarSesion(req, res) {
       if (!esValido) return res.status(400).json({ mensaje: "Credenciales incorrectas" });
   
       const token = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE });
-      res.json({ token, mensaje: "Inicio de sesión exitoso" });
+      res.json({ token, rol: usuario.rol, mensaje: "Inicio de sesión exitoso" }); // Incluye el rol en la respuesta
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
       res.status(500).json({ mensaje: "Error en el inicio de sesión" });
