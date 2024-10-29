@@ -205,7 +205,7 @@ function Habitaciones() {
               className="w-full h-48 object-cover rounded mb-4"
             />
             <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-2">{habitacion.descripcion}</h3>
-            <p className="text-lg text-gray-600 dark:text-gray-300">Tarifa: ${habitacion.tarifas}</p>
+            <p className="text-lg text-gray-600 dark:text-gray-300">Tarifas: Por cada noche, desde {habitacion.tarifas}</p>
             <p className="text-gray-600 dark:text-gray-300">Evaluación: {habitacion.evaluacion}/10</p>
             <p className="text-gray-600 dark:text-gray-300">Comodidades: {habitacion.comodidades}</p>
             <p className="text-gray-600 dark:text-gray-300">Máx. Huéspedes: {habitacion.maximoHuespedes}</p>
