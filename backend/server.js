@@ -21,6 +21,8 @@ mongoose.connect(process.env.MONGO_URI, {
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 const habitacionRoutes = require("./routes/habitacionRoutes");
+const articuloRoutes = require("./routes/articuloRoutes");
+
 app.use("/api/habitaciones", habitacionRoutes);
 
 // Configuración del servidor
