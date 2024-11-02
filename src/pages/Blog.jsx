@@ -12,14 +12,16 @@ function Blog() {
     fetchArticulos();
   }, []);
 
-  const fetchArticulos = async () => {
-    try {
-      const response = await axios.get('/api/articulos'); // Cambia la ruta según tu configuración
-      setArticulos(response.data);
-    } catch (error) {
-      console.error("Error al obtener artículos:", error);
-    }
-  };
+const fetchArticulos = async () => {
+  try {
+    const response = await axios.get('/api/articulos');
+    console.log("Datos recibidos:", response.data); // Verifica el tipo de datos
+    setArticulos(Array.isArray(response.data) ? response.data : []); // Asegura que sea un array
+  } catch (error) {
+    console.error("Error al obtener artículos:", error);
+  }
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -76,29 +78,11 @@ function Blog() {
     setEditId(null);
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 dark:text-gray-100">
-      <h2 className="text-4xl font-bold text-blue-600 mb-4 text-center dark:text-blue-400">Blog de Viajes y Turismo</h2>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <input
-          type="text"
-          name="title"
-          value={nuevoArticulo.title}
-          onChange={handleInputChange}
-          placeholder="Título"
-          required
-          className="border p-2 mb-2"
-        />
-        <textarea
-          name="content"
-          value={nuevoArticulo.content}
-          onChange={handleInputChange}
-          placeholder="Contenido"
-          required
-          className="border p-2 mb-2"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2">{editing ? 'Actualizar' : 'Crear'} Artículo</button>
-      </form>
+return (
+  <div className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 dark:text-gray-100">
+    <h2 className="text-4xl font-bold text-blue-600 mb-4 text-center dark:text-blue-400">Blog de Viajes y Turismo</h2>
+    
+    {Array.isArray(articulos) ? (
       <ul>
         {articulos.map(articulo => (
           <li key={articulo.id} className="mb-4">
@@ -109,8 +93,12 @@ function Blog() {
           </li>
         ))}
       </ul>
-    </div>
-  );
+    ) : (
+      <p>No hay artículos disponibles o ha ocurrido un error.</p>
+    )}
+  </div>
+);
+
 }
 
 export default Blog;
