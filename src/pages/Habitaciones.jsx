@@ -210,13 +210,13 @@ function Habitaciones() {
             <p className="text-gray-600 dark:text-gray-300">Comodidades: {habitacion.comodidades}</p>
             <p className="text-gray-600 dark:text-gray-300">Máx. Huéspedes: {habitacion.maximoHuespedes}</p>
             <div className="mt-2">
-              <h4 className="font-semibold">Reviews:</h4>
+              <h4 className="font-semibold"></h4>
               {habitacion.reviews && habitacion.reviews.length > 0 ? (
                 habitacion.reviews.map((review, index) => (
                   <p key={`${habitacion._id}-review-${index}`} className="text-gray-600 dark:text-gray-300">- {review}</p>
                 ))
               ) : (
-                <p className="text-gray-500">No hay reviews disponibles.</p>
+                <p className="text-gray-500"></p>
               )}
             </div>
             {isAdmin && (
