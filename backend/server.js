@@ -22,7 +22,9 @@ const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 const habitacionRoutes = require("./routes/habitacionRoutes");
 const articuloRoutes = require("./routes/articuloRoutes");
+const testimonioRoutes = require("./routes/testimonioRoutes");
 
+app.use("/api/testimonios", testimonioRoutes);
 app.use("/api/habitaciones", habitacionRoutes);
 
 // Configuración del servidor
