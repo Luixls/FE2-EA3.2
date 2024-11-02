@@ -6,7 +6,7 @@ const {
   editarTestimonio,
   eliminarTestimonio,
 } = require("../controllers/testimonioController");
-const { autenticarToken } = require("../middleware/authMiddleware");
+const autenticarToken = require("../middleware/authMiddleware"); 
 const verificarAdmin = require("../middleware/verificarAdmin");
 
 const router = express.Router();

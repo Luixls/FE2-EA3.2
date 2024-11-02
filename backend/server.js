@@ -21,11 +21,13 @@ mongoose.connect(process.env.MONGO_URI, {
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 const habitacionRoutes = require("./routes/habitacionRoutes");
-const articuloRoutes = require("./routes/articuloRoutes");
-const testimonioRoutes = require("./routes/testimonioRoutes");
-
-app.use("/api/testimonios", testimonioRoutes);
 app.use("/api/habitaciones", habitacionRoutes);
+const articuloRoutes = require("./routes/articuloRoutes");
+app.use("/api/articulos", articuloRoutes);
+const testimonioRoutes = require("./routes/testimonioRoutes");
+app.use("/api/testimonios", testimonioRoutes);
+const reservaRoutes = require("./routes/reservaRoutes");
+app.use("/api/reservas", reservaRoutes);
 
 // Configuración del servidor
 const PORT = process.env.PORT || 5000;

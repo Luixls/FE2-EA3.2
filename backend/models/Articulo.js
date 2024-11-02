@@ -1,4 +1,4 @@
-
+// ruta: backend/models/Articulo.js
 const mongoose = require("mongoose");
 
 const articuloSchema = new mongoose.Schema({
