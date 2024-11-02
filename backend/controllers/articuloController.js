@@ -11,8 +11,16 @@ exports.obtenerArticulos = async (req, res) => {
 };
 
 exports.agregarArticulo = async (req, res) => {
-  const { title, content } = req.body;
-  const nuevoArticulo = new Articulo({ title, content });
+  const { title, content, imageUrl } = req.body;
+  const userId = req.user.id;
+
+  const nuevoArticulo = new Articulo({ 
+    title, 
+    content, 
+    imageUrl, // Agregar la URL de la imagen
+    author: userId 
+  });
+
   try {
     await nuevoArticulo.save();
     res.status(201).json(nuevoArticulo);
@@ -23,9 +31,10 @@ exports.agregarArticulo = async (req, res) => {
 
 exports.editarArticulo = async (req, res) => {
   const { id } = req.params;
-  const { title, content } = req.body;
+  const { title, content, imageUrl } = req.body;
+
   try {
-    const articulo = await Articulo.findByIdAndUpdate(id, { title, content }, { new: true });
+    const articulo = await Articulo.findByIdAndUpdate(id, { title, content, imageUrl }, { new: true });
     res.json(articulo);
   } catch (error) {
     res.status(500).json({ message: "Error al editar artículo" });
